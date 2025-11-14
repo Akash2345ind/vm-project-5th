@@ -3,11 +3,10 @@ pipeline {
         label 'system-1'
     }
     stages {
-        stage('update git repo') {
+        stage('git repo') {
             steps {
                 dir('/home/Akash/project'){
-                    sh 'pwd'
-                    sh 'git pull origin master'
+                    checkout scm
                 }
             }
         }
@@ -31,7 +30,7 @@ pipeline {
         stage('RUN Docker in New VM') {
             steps {
                 dir('/home/Akash/project'){
-                    sh 'ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /home/Akash/vm_public_ip.txt /home/Akash/install_docker.yaml --private-key=/home/Akash/.ssh/id_rsa'
+                    sh 'ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /home/Akash/vm_public_ip.txt /home/Akash/project/ansible.yaml --private-key=/home/Akash/.ssh/id_rsa'
                 }
             }
         }
